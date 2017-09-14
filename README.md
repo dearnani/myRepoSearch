@@ -25,7 +25,8 @@ The application
 	
 Configuration:
 The following are the application specific settings needs to be configured and this file should be in class path which bundles in jar
-	
+The given consumerKey and consumerSecret are just show the sample datay, may not work.
+
 	app-settings.properties
 		
 	github.api.search.keyword=reactive
@@ -42,8 +43,7 @@ The following are the application specific settings needs to be configured and t
 	
 	# will be stored at User Home directory
 	json.fileName=Result.json
-	
-The given consumerKey and consumerSecret are just show the sample day, may not work.
+
 Save the configuration file under /src/main/resources 
 
 HOW To Run:
