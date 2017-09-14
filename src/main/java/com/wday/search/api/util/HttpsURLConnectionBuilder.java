@@ -76,7 +76,6 @@ public class HttpsURLConnectionBuilder {
 	 * @return HttpsURLConnections
 	 * 
 	 * 
-	 * 
 	 */
 	private static HttpsURLConnection getTwitterAPIConnection(String gitHubProjName) {
 		HttpsURLConnection httpsURLConnection = null;
