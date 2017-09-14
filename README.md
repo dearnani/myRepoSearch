@@ -23,25 +23,8 @@ The application
 	
 	Used the right User-Agent to confiigure user.agent : http://www.whoishostingthis.com/tools/user-agent/
 	
-HOW To Run:
-	
-	To compile the program use the following maven command:
-	mvn package
-
-	The program compiles into one single jar file that contains the following runnable class:
-	com.wday.search.api.core.MainApp
-
-	The program can be run from the command line or with the following Maven command:
-	mvn exec:exec
-
-	You can also run the following way to set up the application mandatory configuration properties
-	
-	mvn exec:exec -DsettingsFile="app-settings.properties"
-		
-	The following are the application specific settings needs to be configured and this file should be in class path to load into application memory.
-	The given consumerKey and consumerSecret are just show the sample day, may not work.
-
 Configuration:
+The following are the application specific settings needs to be configured and this file should be in class path which bundles in jar
 	
 	app-settings.properties
 		
@@ -59,3 +42,24 @@ Configuration:
 	
 	# will be stored at User Home directory
 	json.fileName=Result.json
+	
+The given consumerKey and consumerSecret are just show the sample day, may not work.
+Save the configuration file under /src/main/resources 
+
+HOW To Run:
+	
+	To compile the program use the following maven command:
+	mvn clain install package -Pprod
+
+	The program compiles into one single jar file that contains the following runnable class:
+	com.wday.search.api.core.MainApp
+
+	The program can be run from the command line or with the following Maven command:
+	mvn exec:exec
+
+	You can also run the following way to set up the application mandatory configuration properties
+	
+	mvn exec:exec -DsettingsFile="my-app-settings.properties"
+	
+	Note: You should keep the my-app-settings.properties under the packaged .jar as a classpath resource.
+	
