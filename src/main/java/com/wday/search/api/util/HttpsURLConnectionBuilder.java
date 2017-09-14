@@ -3,7 +3,6 @@ package com.wday.search.api.util;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Properties;
@@ -20,6 +19,8 @@ import org.json.JSONObject;
 import com.wday.search.api.exception.SearchAPICustomException;
 
 /**
+ *@author Narasimha
+ *@version 1.0
  * 
  */
 public class HttpsURLConnectionBuilder {
@@ -47,7 +48,7 @@ public class HttpsURLConnectionBuilder {
 	
 	/**
 	 * Builds the GitHub API HttpsURLConnection by using configuration parameters
-	 * 
+	 * @param apiParameter keyword to be searched
 	 */
 	private static HttpsURLConnection getGitHubAPIConnection(String apiParameter) {
 		HttpsURLConnection httpURLConnection = null;
@@ -72,9 +73,9 @@ public class HttpsURLConnectionBuilder {
 	 * 
 	 * Builds the Twitter API HttpsURLConnection by using configuration parameters,
 	 * Authenticates using Basic Authentication, Authorizes with Bearer Token.
-	 * @param gitHubProjName
-	 * @return HttpsURLConnections
 	 * 
+	 * @param gitHubProjName To be Searched with this GitHubProject
+	 * @return HttpsURLConnections - Establishes the connections to invoke the Service 
 	 * 
 	 */
 	private static HttpsURLConnection getTwitterAPIConnection(String gitHubProjName) {
@@ -103,7 +104,8 @@ public class HttpsURLConnectionBuilder {
 	
 	
 	/**
-	 * Builds the queryString   
+	 * Builds the queryString
+	 *    
 	 * @return QueryString to invoke GitHub API
 	 */
 	private static String gitHubURLBuilder(String apiConfigParam)
@@ -123,17 +125,12 @@ public class HttpsURLConnectionBuilder {
 	 * 
 	 * @param endPointUrl
 	 * @return
-	 * @throws MalformedURLException
-	 * @throws JSONException
-	 * @throws IOException
-	 * @throws 
 	 * 
 	 */
-	private static String requestBearerToken(String endPointUrl) throws MalformedURLException, JSONException, IOException  {
-
+	private static String requestBearerToken(String endPointUrl) {
 		HttpsURLConnection httpsURLConnection = null;
-		String encodedUserCredentials = new String(Base64.encodeBase64(String.format("%s:%s", URLEncoder.encode(configProps.getProperty("oauth.consumerKey").trim(),"UTF-8"),URLEncoder.encode(configProps.getProperty("oauth.consumerSecret"),"UTF-8")).getBytes()));
 		try {
+			String encodedUserCredentials = new String(Base64.encodeBase64(String.format("%s:%s", URLEncoder.encode(configProps.getProperty("oauth.consumerKey").trim(),"UTF-8"),URLEncoder.encode(configProps.getProperty("oauth.consumerSecret"),"UTF-8")).getBytes()));
 			URL url = new URL(endPointUrl);
 			httpsURLConnection = (HttpsURLConnection) url.openConnection();
 			httpsURLConnection.setDoOutput(true);
@@ -150,14 +147,14 @@ public class HttpsURLConnectionBuilder {
 			writeRequest(httpsURLConnection, "grant_type=client_credentials");
 
 			StringBuffer response = new StringBuffer(IOUtils.toString(httpsURLConnection.getInputStream(),"utf-8"));
-			JSONObject obj = new JSONObject(response.toString());
+			JSONObject jsonObj = new JSONObject(response.toString());
 
-			String tokenType = (String) obj.get("token_type");
-			String token = (String) obj.get("access_token");
+			String tokenType = (String) jsonObj.get("token_type");
+			String token = (String) jsonObj.get("access_token");
 
 			return ((tokenType.equals("bearer")) && (token != null)) ? token : "";
-		} catch (MalformedURLException | JSONException e) {
-			logger.error("Exception Occured while retrieving the Bearer Token");
+		} catch (IOException | JSONException  exception) {
+			logger.error(String.format("Exception Occured while retrieving the Bearer Token:%s",exception.getMessage()));
 		} finally {
 			if (httpsURLConnection != null) {
 				httpsURLConnection.disconnect();
@@ -167,7 +164,7 @@ public class HttpsURLConnectionBuilder {
 	}
 	
 	/**
-	 *  Updates the request
+	 *  Saves the request into Http Header
 	 * 
 	 * @param connection
 	 * @param textBody
@@ -184,6 +181,27 @@ public class HttpsURLConnectionBuilder {
 		}
 	}
 
+	public static String validateStatuCode(int statusCode) {
+		String errorMessge = "";
 
+		switch (statusCode) {
+		case 400:
+			errorMessge = configProps.getProperty("error.400");
+			break;
+		case 401:
+			errorMessge = configProps.getProperty("error.401");
+			break;
+		case 403:
+			errorMessge = configProps.getProperty("error.403");
+			break;
+		case 500:
+			errorMessge =configProps.getProperty("error.500");
+			break;
+		}
+		if (errorMessge.length() > 0) {
+			logger.error(String.format(" Validation Failed while invoking the twitter API Services,%s", errorMessge));
+		}
 
+		return errorMessge;
+	}
 }

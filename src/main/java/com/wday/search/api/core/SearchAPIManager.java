@@ -7,7 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,29 +20,31 @@ import com.wday.search.api.twitter.TweetsSearchServiceImpl;
 import com.wday.search.api.util.PropertyServiceLocator;
 
 /**
- * 
- * @author Narasimha
- * 
+ *
  * This is main class which handles the GiHub and Twitter Services to access their respective APIs
  * 
+ * @author Narasimha
+ * @version 1.0
  *
  */
 public class SearchAPIManager {
 
-	final static Logger logger = Logger.getLogger(SearchAPIManager.class);
+	private static Log logger = LogFactory.getLog(SearchAPIManager.class);
 	
 	//private static Log logger = LogFactory.getLog(Main.class);
 	
 	/**
-	 * Manage the result of Twitter and GitHub API services, 
-	 * JSON preparation. 
-	 * @param args
+	 * Manage the results of Twitter and GitHub API services, 
+	 * Prepares JSON file as end result. 
+	 * 
 	 */
 	public static void manageAPI() {
 		try {
-			
-			String apiConfigParam = PropertyServiceLocator.getInstance().getProperty("github.api.search.keyword"); 
+			// The key word to search the gitHub Repository
+			String apiConfigParam = PropertyServiceLocator.getInstance().getProperty("github.api.search.keyword");
+			// Invoke the GitHub API Service
 			List<String> gitHubProjectDetails = fetchGitHubRepositoryNames(apiConfigParam);
+			// Construct the result JSON
 			JSONObject resultJSON = new JSONObject();
 			JSONObject tweetMessages = new JSONObject();
 			String[] actulaGitHubDetails = { "", "", "" };
@@ -54,55 +57,62 @@ public class SearchAPIManager {
 						gitHubJSON.put("language", actulaGitHubDetails[1]);
 					else
 						gitHubJSON.put("language", "");
+					// Get the Twitter API response data 
 					tweetMessages = fetchTweetsForRepoNames(actulaGitHubDetails[0].split("/")[0]);
 					gitHubJSON.put("TwitterAPIattribs", tweetMessages);
 					resultJSON.append("GitHubProjects", gitHubJSON);
 				}
 			}
+			// Save to JsonFile
 			printJsonToFile(resultJSON);
 			
 		} catch( SearchAPICustomException exception) {
 			
-			logger.error(String.format("Exception Occureed ErrorCode:%s Error Meesage",exception.getErrCode(),exception.getErrMsg()));
+			logger.error(String.format("Exception Occureed, Exiting the Application ErrorCode:%s Error Meesage %s",exception.getErrCode(),exception.getErrMsg()));
+			System.exit(-1);
 		}
 		
 	}
 	/**
-	 * 
 	 * Saves the JsonObject data into User's Home Directory
-	 * @param jsonObject 
+	 * 
+	 * @param jsonObject to be printed JSONOBject 
 	 * 
 	 */
 	private static void printJsonToFile(JSONObject jsonObject) {
+		// Generic Folder to save in to local disk location - User Home Directory
 		Path path = Paths.get(String.format("%s\\%s", System.getProperty("user.home"),
 				PropertyServiceLocator.getInstance().getProperty("json.fileName")));
 		try (BufferedWriter jsonFileWriter = Files.newBufferedWriter(path)) {
 			jsonObject.write(jsonFileWriter);
 		} catch (IOException | JSONException exception) {
 			logger.error(String.format("Exception Occured while saving the resulted Json File: %s", exception.getMessage()));
-			throw new SearchAPICustomException("105","Exception Occured while saving the response to JSON File");
+			throw new SearchAPICustomException("105",String.format("Exception Occured while saving the response to JSON File:%s",exception.getMessage()));
 		}
 	}
 	/**
-	 * 
 	 * Invokes Twitter API to access twitter Messages.
-	 * @param gitHubProjects GitHub Project Name
+	 * 
+	 * @param gitHubProjects GitHub Project Name - keyword to the API which sets to q parameter
 	 * @return JSONObject with all the twitter messages
 	 * 
 	 */
-	private static JSONObject fetchTweetsForRepoNames(String gitHubProjects)  {
+	private static JSONObject fetchTweetsForRepoNames(String gitHubProjName)  {
 		TweetsSearchService tweetsSearchService = new TweetsSearchServiceImpl();
-		JSONObject tweetMessages = tweetsSearchService.searchRecentTweetsByGitHubProject(gitHubProjects);
+		JSONObject tweetMessages = tweetsSearchService.searchRecentTweetsByGitHubProject(gitHubProjName);
 		return tweetMessages;
 	}
 
 	/**
 	 * Invokes GitHub API to get the list of GitHub projects
-	 * @return List of GitHub Repository Names
+	 * 
+	 * @param apiConfigParam GitHubProjectName value assigned to q for Twitter API
+	 * @return GitHub Repository Name
 	 */
-	private static List<String> fetchGitHubRepositoryNames(String... apiConfigParam)  {
+	private static List<String> fetchGitHubRepositoryNames(String apiConfigParam)  {
 		GitHubRepoSearchService gitHubRepoSearchService = new GitHubRepoSearchServiceImpl();
-		List<String> repoNames = gitHubRepoSearchService.searchGiHubRepoByKeyword(apiConfigParam[0]);
+		// apiConfigParam is GitHubProjectName, we can scale it by having ellipsis to send more requests parameters
+		List<String> repoNames = gitHubRepoSearchService.searchGiHubRepoByKeyword(apiConfigParam);
 		return repoNames;
 	}
 }
