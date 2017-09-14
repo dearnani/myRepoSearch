@@ -17,27 +17,34 @@ import org.json.JSONException;
 public class HttpsURLConnectionBuilder {
 	
 	final static Logger logger = Logger.getLogger(HttpsURLConnectionBuilder.class);
-	Properties configProps = PropertyServiceLocator.getInstance().populateAllproperties();
+	static Properties configProps = PropertyServiceLocator.getInstance().getProperties();
 	
 	/**
+	 * @param APiType conveys about which API to invoke
+	 * @param gitHubProjName the key word to search Tweets using twitter API
+	 * 
+	 * Builds the respective API's HttpsURLConnection 
+	 * 
 	 */
-	public HttpsURLConnection buildConnection (ApiType api,String... gitHubProjName)   {
+	public static HttpsURLConnection buildConnection (ApiType api, String apiParameter)   {
 		HttpsURLConnection httpURLConnection = null;
 		switch(api) {
 		case GitHub: 
-			return getGitHubAPIConnection();
+			return getGitHubAPIConnection(apiParameter);
 		case Twitter:
-			return getTwitterAPIConnection(gitHubProjName);
+			return getTwitterAPIConnection(apiParameter);
 		}
 		return httpURLConnection;
 	}
 	
 	/**
+	 * Builds the GitHub API HttpsURLConnection by using configuration parameters
+	 * 
 	 */
-	private HttpsURLConnection getGitHubAPIConnection() {
+	private static HttpsURLConnection getGitHubAPIConnection(String apiParameter) {
 		HttpsURLConnection httpURLConnection = null;
 		try {
-			URL url = new URL(girHubURLBuilder());
+			URL url = new URL(gitHubURLBuilder(apiParameter));
 			httpURLConnection = (HttpsURLConnection) url.openConnection();
 			httpURLConnection.setDoOutput(true);
 			httpURLConnection.setDoInput(true);
@@ -52,11 +59,21 @@ public class HttpsURLConnectionBuilder {
 		return httpURLConnection;
 	}
 	
-	private HttpsURLConnection getTwitterAPIConnection(String[] gitHubProjName) {
+	/**
+	 * 
+	 * Builds the Twitter API HttpsURLConnection by using configuration parameters,
+	 * Authenticates using Basic Authentication, Authorizes with Bearer Token.
+	 * @param gitHubProjName
+	 * @return HttpsURLConnections
+	 * 
+	 * 
+	 * 
+	 */
+	private static HttpsURLConnection getTwitterAPIConnection(String gitHubProjName) {
 		HttpsURLConnection httpsURLConnection = null;
 		try {
 			String encodedUserCredentials = new String(Base64.encodeBase64(String.format("%s:%s", URLEncoder.encode(configProps.getProperty("oauth.consumerKey").trim(),"UTF-8"),URLEncoder.encode(configProps.getProperty("oauth.consumerSecret"),"UTF-8")).getBytes()));
-			URL url = new URL(configProps.getProperty("twitter.api.search.tweets.url")+gitHubProjName[0]);
+			URL url = new URL(configProps.getProperty("twitter.api.search.tweets.url")+gitHubProjName);
 			httpsURLConnection = (HttpsURLConnection) url.openConnection();
 			httpsURLConnection.setDoOutput(true);
 			httpsURLConnection.setDoInput(true);
@@ -73,10 +90,14 @@ public class HttpsURLConnectionBuilder {
 		return httpsURLConnection;
 	}
 	
-	private String girHubURLBuilder()
+	/**
+	 * Builds the queryString   
+	 * @return QueryString to invoke GitHub API
+	 */
+	private static String gitHubURLBuilder(String apiConfigParam)
 	{
 		StringBuilder urlBuilder = new StringBuilder(configProps.getProperty("github.api.search.keyword.url"));
-		urlBuilder.append(configProps.getProperty("github.api.search.keyword"))
+		urlBuilder.append(apiConfigParam)
 				  .append("&sort=")
 				  .append(configProps.getProperty("github.api.search.sort"))
 				  .append("&order=")

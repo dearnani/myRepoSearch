@@ -48,7 +48,7 @@ public class PropertyServiceLocator {
 		return configProp.containsKey(key);
 	}
 	
-	public Properties populateAllproperties() {
+	public Properties getProperties() {
 		return configProp;
 	}
 }

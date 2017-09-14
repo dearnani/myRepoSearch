@@ -7,5 +7,5 @@ import java.util.List;
  *
  */
 public interface GitHubRepoSearchService {
-	 	 List<String> searchGiHubRepoByKeyword ();
+	 	 List<String> searchGiHubRepoByKeyword (String apiConfigParam);
 }

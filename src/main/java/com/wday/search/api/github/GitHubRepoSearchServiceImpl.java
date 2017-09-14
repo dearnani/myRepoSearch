@@ -22,15 +22,16 @@ import com.wday.search.api.util.HttpsURLConnectionBuilder;
  */
 public class GitHubRepoSearchServiceImpl implements GitHubRepoSearchService {
 	final static Logger logger = Logger.getLogger(GitHubRepoSearchServiceImpl.class);
-
-	public List<String> searchGiHubRepoByKeyword() {
+	/**
+	 * Searches the GitHub Repository 
+	 */
+	public List<String> searchGiHubRepoByKeyword(String apiConfigParam) {
 		HttpsURLConnection httpsURLConection = null;
 		List<String> repositoryProjects = new ArrayList<String>();
 		JSONArray gitHubProjects;
 		JSONObject json;
 		try {
-			HttpsURLConnectionBuilder builder = new HttpsURLConnectionBuilder();
-			httpsURLConection = builder.buildConnection(ApiType.GitHub);
+			httpsURLConection = HttpsURLConnectionBuilder.buildConnection(ApiType.GitHub,apiConfigParam);
 			StringBuffer response = new StringBuffer(IOUtils.toString(httpsURLConection.getInputStream(), "UTF-8"));
 			if (response != null) {
 				gitHubProjects = new JSONObject(response.toString()).getJSONArray("items");

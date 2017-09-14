@@ -20,18 +20,23 @@ import com.wday.search.api.util.PropertyServiceLocator;
 /**
  * 
  * @author Narasimha
+ * 
+ * This is main class which handles the GiHub and Twitter Services to access their respective APIs
+ * 
  *
  */
 public class SearchAPIManager {
 
 	final static Logger logger = Logger.getLogger(SearchAPIManager.class);
-
+	
 	/**
-	 * 
+	 * Manage the result of Twitter and GitHub API services, 
+	 * JSON preparation. 
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		List<String> gitHubProjectDetails = fetchGitHubRepositoryNames();
+	public static void manageAPI() {
+		String apiConfigParam = PropertyServiceLocator.getInstance().getProperty("github.api.search.keyword"); 
+		List<String> gitHubProjectDetails = fetchGitHubRepositoryNames(apiConfigParam);
 		JSONObject resultJSON = new JSONObject();
 		JSONObject tweetMessages = new JSONObject();
 		String[] actulaGitHubDetails = { "", "", "" };
@@ -53,7 +58,9 @@ public class SearchAPIManager {
 	}
 	/**
 	 * 
-	 * @param jsonObject
+	 * Saves the JsonObject data into User's Home Directory
+	 * @param jsonObject 
+	 * 
 	 */
 	private static void printJsonToFile(JSONObject jsonObject) {
 		Path path = Paths.get(String.format("%s\\%s", System.getProperty("user.home"),
@@ -66,22 +73,24 @@ public class SearchAPIManager {
 	}
 	/**
 	 * 
-	 * @param gitHubProjects
-	 * @return
+	 * Invokes Twitter API to access twitter Messages.
+	 * @param gitHubProjects GitHub Project Name
+	 * @return JSONObject with all the twitter messages
+	 * 
 	 */
 	private static JSONObject fetchTweetsForRepoNames(String gitHubProjects) {
 		TweetsSearchService tweetsSearchService = new TweetsSearchServiceImpl();
-		JSONObject tweetMessages = tweetsSearchService.searchRecentTweetsByKeywords(gitHubProjects);
+		JSONObject tweetMessages = tweetsSearchService.searchRecentTweetsByGitHubProject(gitHubProjects);
 		return tweetMessages;
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Invokes GitHub API to get the list of GitHub projects
+	 * @return List of GitHub Repository Names
 	 */
-	private static List<String> fetchGitHubRepositoryNames() {
+	private static List<String> fetchGitHubRepositoryNames(String apiConfigParam) {
 		GitHubRepoSearchService gitHubRepoSearchService = new GitHubRepoSearchServiceImpl();
-		List<String> repoNames = gitHubRepoSearchService.searchGiHubRepoByKeyword();
+		List<String> repoNames = gitHubRepoSearchService.searchGiHubRepoByKeyword(apiConfigParam);
 		return repoNames;
 	}
 }

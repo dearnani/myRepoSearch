@@ -7,6 +7,6 @@ import org.json.JSONObject;
 
 public interface TweetsSearchService {
 
-	JSONObject searchRecentTweetsByKeywords(@NotNull(message = "Repository Names should not be NULL") final String keywords);
+	JSONObject searchRecentTweetsByGitHubProject(@NotNull(message = "Repository Names should not be NULL") final String keywords);
 	
 }
