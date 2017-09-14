@@ -21,45 +21,33 @@ import com.wday.search.api.util.HttpsURLConnectionBuilder;
  *
  */
 public class GitHubRepoSearchServiceImpl implements GitHubRepoSearchService {
-	
 	final static Logger logger = Logger.getLogger(GitHubRepoSearchServiceImpl.class);
-	
-	  public List<String> searchGiHubRepoByKeyword ()
-	    {
-		  HttpsURLConnection httpsURLConection = null;
-		  List<String> repositoryProjects = new ArrayList<String>();
-		  JSONArray gitHubProjects;
-		  JSONObject json;
-		  try
-		  {
-			  logger.info("GitHubRepoSearchServiceImpl->searchGiHubRepoByKeyword: Before GitHub API Query");
-			  
-			  HttpsURLConnectionBuilder builder = new HttpsURLConnectionBuilder();
-			  
-			  httpsURLConection = builder.buildConnection(ApiType.GitHub);
-			  StringBuffer response = new StringBuffer(IOUtils.toString(httpsURLConection.getInputStream(),"UTF-8"));
-			  
-			  if(response!=null)
-			  {
-				  	 gitHubProjects = new JSONObject(response.toString()).getJSONArray("items");
-				  	 
-				  	 logger.debug(String.format("GitHubRepoSearchServiceImpl->searchGiHubRepoByKeyword: gitHubProjects.length: %s ", gitHubProjects.toString()));
-		    	
-		    	 // Capturing the first 10 GitHub repos search results given as keyword
-		    	for(int index=0; index<gitHubProjects.length(); index++){
-		    		json = (JSONObject)gitHubProjects.get(index);	
-		    		repositoryProjects.add(String.format("%s:%s", json.get("full_name").toString(),json.get("language").toString()));
-		    	}
-			  }
-		  } catch (  IOException ioException )
-		  {
-			logger.error(String.format("GitHubRepoSearchServiceImpl->searchGiHubRepoByKeyword: IOExcepion.getMessage(): %s", ioException.getMessage())); 
-		  } finally{
-	        	if(httpsURLConection != null)
-	        		httpsURLConection.disconnect();
-	        }
-		  	logger.info("GitHubRepoSearchServiceImpl->searchGiHubRepoByKeyword: Returned the results");
-	    	return repositoryProjects;
-	    }
-	
+
+	public List<String> searchGiHubRepoByKeyword() {
+		HttpsURLConnection httpsURLConection = null;
+		List<String> repositoryProjects = new ArrayList<String>();
+		JSONArray gitHubProjects;
+		JSONObject json;
+		try {
+			HttpsURLConnectionBuilder builder = new HttpsURLConnectionBuilder();
+			httpsURLConection = builder.buildConnection(ApiType.GitHub);
+			StringBuffer response = new StringBuffer(IOUtils.toString(httpsURLConection.getInputStream(), "UTF-8"));
+			if (response != null) {
+				gitHubProjects = new JSONObject(response.toString()).getJSONArray("items");
+				for (int index = 0; index < gitHubProjects.length(); index++) {
+					json = (JSONObject) gitHubProjects.get(index);
+					repositoryProjects.add(
+							String.format("%s:%s", json.get("full_name").toString(), json.get("language").toString()));
+				}
+			}
+		} catch (IOException ioException) {
+			logger.error(
+					String.format("GitHubRepoSearchServiceImpl->searchGiHubRepoByKeyword: IOExcepion.getMessage(): %s",
+							ioException.getMessage()));
+		} finally {
+			if (httpsURLConection != null)
+				httpsURLConection.disconnect();
+		}
+		return repositoryProjects;
+	}
 }
