@@ -83,7 +83,7 @@ public class HttpsURLConnectionBuilder {
 		try {
 			String encodedUserCredentials = new String(Base64.encodeBase64(String.format("%s:%s", URLEncoder.encode(configProps.getProperty("oauth.consumerKey").trim(),"UTF-8"),URLEncoder.encode(configProps.getProperty("oauth.consumerSecret"),"UTF-8")).getBytes()));
 			String BeareToken = requestBearerToken(configProps.getProperty("twitter.oauth.api.token"));
-			URL url = new URL(String.format("%S%S",configProps.getProperty("twitter.api.search.tweets.url"),gitHubProjName));
+			URL url = new URL(String.format("%s%s",configProps.getProperty("twitter.api.search.tweets.url"),gitHubProjName));
 			httpsURLConnection = (HttpsURLConnection) url.openConnection();
 			httpsURLConnection.setDoOutput(true);
 			httpsURLConnection.setDoInput(true);

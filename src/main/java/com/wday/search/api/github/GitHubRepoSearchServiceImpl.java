@@ -47,7 +47,7 @@ public class GitHubRepoSearchServiceImpl implements GitHubRepoSearchService {
 			logger.error(
 					String.format("GitHubRepoSearchServiceImpl->searchGiHubRepoByKeyword: IOExcepion.getMessage(): %s",
 							ioException.getMessage()));
-			throw new SearchAPICustomException("101","Exception Occured at the GitHub API Service");
+			throw new SearchAPICustomException("101", String.format("Exception Occured at the GitHub API Service:%s",ioException.getMessage()));
 		} finally {
 			if (httpsURLConection != null)
 				httpsURLConection.disconnect();
