@@ -44,7 +44,7 @@ The given consumerKey and consumerSecret are just show the sample datay, may not
 	# will be stored at User Home directory
 	json.fileName=Result.json
 
-Save the configuration file under /src/main/resources 
+Save the configuration file as a classpath resource. Ex: /src/main/resources 
 
 HOW To Run:
 	
