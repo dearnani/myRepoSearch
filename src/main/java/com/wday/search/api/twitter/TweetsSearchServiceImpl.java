@@ -6,11 +6,13 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.wday.search.api.exception.SearchAPICustomException;
 import com.wday.search.api.util.ApiType;
 import com.wday.search.api.util.HttpsURLConnectionBuilder;
 /**
@@ -19,7 +21,8 @@ import com.wday.search.api.util.HttpsURLConnectionBuilder;
  *
  */
 public class TweetsSearchServiceImpl implements TweetsSearchService {
-	final static Logger logger = Logger.getLogger(TweetsSearchServiceImpl.class);
+	
+	private static Log logger = LogFactory.getLog(TweetsSearchServiceImpl.class);
 
 	/**
 	 * Searches the recent tweets by GitHubProjectName
@@ -32,7 +35,7 @@ public class TweetsSearchServiceImpl implements TweetsSearchService {
 		JSONObject tweetMessages = new JSONObject();
 		JSONArray jsonArray = new JSONArray();
 		try {
-			httpsURLConection = HttpsURLConnectionBuilder.buildConnection(ApiType.Twitter, gitHubProjectName.split("/")[0]);
+			httpsURLConection = HttpsURLConnectionBuilder.buildConnection(ApiType.Twitter, gitHubProjectName);
 			StringBuilder response = new StringBuilder(IOUtils.toString(httpsURLConection.getInputStream(), "UTF-8"));
 			if (response != null) {
 				json = (JSONObject) new JSONObject(response.toString());
@@ -47,8 +50,11 @@ public class TweetsSearchServiceImpl implements TweetsSearchService {
 			}
 			logger.debug("TweetsSearchServiceImpl->" + tweetMessages.toString());
 		} catch (IOException | JSONException twitterServiceException) {
+			
 			logger.error(String.format("Failed to search tweets:Exception Occured -> searchRecentTweetsByKeywords:"
 					+ twitterServiceException.getMessage()));
+			twitterServiceException.printStackTrace();
+			throw new SearchAPICustomException("102", String.format("Exception Occured at Twitter API Service : %s",twitterServiceException.getMessage()));
 		} finally {
 			if (httpsURLConection != null)
 				httpsURLConection.disconnect();

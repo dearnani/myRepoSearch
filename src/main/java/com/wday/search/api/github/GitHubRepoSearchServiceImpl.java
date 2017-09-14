@@ -7,10 +7,12 @@ import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.wday.search.api.exception.SearchAPICustomException;
 import com.wday.search.api.util.ApiType;
 import com.wday.search.api.util.HttpsURLConnectionBuilder;
 
@@ -21,7 +23,7 @@ import com.wday.search.api.util.HttpsURLConnectionBuilder;
  *
  */
 public class GitHubRepoSearchServiceImpl implements GitHubRepoSearchService {
-	final static Logger logger = Logger.getLogger(GitHubRepoSearchServiceImpl.class);
+	private static Log logger = LogFactory.getLog(GitHubRepoSearchServiceImpl.class);
 	/**
 	 * Searches the GitHub Repository 
 	 */
@@ -45,6 +47,7 @@ public class GitHubRepoSearchServiceImpl implements GitHubRepoSearchService {
 			logger.error(
 					String.format("GitHubRepoSearchServiceImpl->searchGiHubRepoByKeyword: IOExcepion.getMessage(): %s",
 							ioException.getMessage()));
+			throw new SearchAPICustomException("101","Exception Occured at the GitHub API Service");
 		} finally {
 			if (httpsURLConection != null)
 				httpsURLConection.disconnect();

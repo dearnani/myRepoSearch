@@ -20,8 +20,8 @@ public class PropertyServiceLocator {
 	private PropertyServiceLocator() {
 		// Private constructor to restrict new instances
 		logger.debug("Read all properties from properties file: application.properties");
-		try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("application.properties")){
-			configProp.load(inputStream);
+		try (InputStream configInputStream = this.getClass().getClassLoader().getResourceAsStream("application.properties");){
+			configProp.load(configInputStream);
 		} catch (IOException e) {
 			logger.error(String.format("IOException Occured while reading the properties from application.properties", e.getMessage()));
 		}
@@ -51,4 +51,9 @@ public class PropertyServiceLocator {
 	public Properties getProperties() {
 		return configProp;
 	}
+	
+	public void setProperties(Properties settingProps) {
+		 configProp.putAll(settingProps);
+	}
+	
 }
