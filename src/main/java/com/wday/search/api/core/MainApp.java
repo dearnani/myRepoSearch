@@ -17,7 +17,7 @@ public class MainApp {
 //			System.err.println("No input file is given.");
 //			System.exit(-1);
 //		}
-//System.out.println("SettinggFile:"+System.getProperty("settingsFile"));
+
 		appSettings = System.getProperties();
 		try (InputStream settingFileStream = MainApp.class.getClassLoader().getResourceAsStream("app-settings.properties")) {
 			
@@ -30,5 +30,4 @@ public class MainApp {
 		
 		SearchAPIManager.manageAPI();
 	}
-
 }

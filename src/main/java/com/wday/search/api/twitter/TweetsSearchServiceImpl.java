@@ -53,6 +53,7 @@ public class TweetsSearchServiceImpl implements TweetsSearchService {
 					tweetMessages.put("text", ((JSONObject) jsonArray.get(index)).get("text"));
 					tweetMessages.put("screen_name",
 							((JSONObject) ((JSONObject) jsonArray.get(index)).get("user")).get("screen_name"));
+					
 					String tweetLimit = PropertyServiceLocator.getInstance().getProperty("tweets.limit");
 					
 					if (index < validateNoTweets(tweetLimit) )
