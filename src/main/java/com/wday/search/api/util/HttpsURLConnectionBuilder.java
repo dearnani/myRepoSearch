@@ -27,6 +27,11 @@ public class HttpsURLConnectionBuilder {
 	
 	private static Log logger = LogFactory.getLog(HttpsURLConnectionBuilder.class);
 	static Properties configProps = PropertyServiceLocator.getInstance().getProperties();
+
+	static {
+		AppSettingUpdateUtil.applyApplicationSettings();
+	}
+	
 	
 	/**
 	 * @param APiType conveys about which API to invoke
