@@ -99,7 +99,7 @@ public class SearchAPIManager {
 	 */
 	private static JSONObject fetchTweetsForRepoNames(String gitHubProjName)  {
 		TweetsSearchService tweetsSearchService = new TweetsSearchServiceImpl();
-		JSONObject tweetMessages = tweetsSearchService.searchRecentTweetsByGitHubProject(gitHubProjName);
+		JSONObject tweetMessages = tweetsSearchService.searchRecentTweetsForKeyword(gitHubProjName);
 		return tweetMessages;
 	}
 

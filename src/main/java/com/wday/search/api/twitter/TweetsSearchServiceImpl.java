@@ -31,7 +31,7 @@ public class TweetsSearchServiceImpl implements TweetsSearchService {
 	 * @return JsonObject Twitter API Response
 	 * 
 	 */
-	public JSONObject searchRecentTweetsByGitHubProject(
+	public JSONObject searchRecentTweetsForKeyword (
 			@NotNull(message = "Repository Names should not be NULL") final String gitHubProjectName) { 
 		HttpsURLConnection httpsURLConection = null;
 		JSONObject json = null;

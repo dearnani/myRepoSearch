@@ -92,7 +92,7 @@ public class HttpsURLConnectionBuilder {
 			httpsURLConnection.setRequestProperty("User-Agent", configProps.getProperty("user.agent"));
 			httpsURLConnection.setRequestProperty("Authentication", "Basic " + encodedUserCredentials);
 			httpsURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-			httpsURLConnection.setRequestProperty("Authorization", String.format("Bearer %s",  BeareToken)); //+ "AAAAAAAAAAAAAAAAAAAAAPsG2QAAAAAASpupJSX4kBQHL0c1xxydr2aDCcI%3D06zNsVzup40gNTS1hjtvJ5eUaampVr0jEzAJ5qepj1ShrQ11YA");
+			httpsURLConnection.setRequestProperty("Authorization", String.format("Bearer %s",  BeareToken)); 
 			httpsURLConnection.setUseCaches(false);
 		} catch ( IOException | JSONException  exception) {
 			logger.debug(" Exception Occured while trying to establish HttpsURLConnection for Twitter API Exception:"+exception.getMessage());

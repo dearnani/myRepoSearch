@@ -9,6 +9,6 @@ import com.wday.search.api.exception.SearchAPICustomException;
 
 public interface TweetsSearchService {
 
-	JSONObject searchRecentTweetsByGitHubProject(@NotNull(message = "Repository Names should not be NULL") final String keywords) throws SearchAPICustomException;
+	JSONObject searchRecentTweetsForKeyword(@NotNull(message = "Repository Names should not be NULL") final String keywords) throws SearchAPICustomException;
 	
 }
