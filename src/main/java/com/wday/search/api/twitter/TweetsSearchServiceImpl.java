@@ -56,7 +56,7 @@ public class TweetsSearchServiceImpl implements TweetsSearchService {
 					
 					String tweetLimit = PropertyServiceLocator.getInstance().getProperty("tweets.limit");
 					
-					if (index < validateNoTweets(tweetLimit) )
+					if (index > validateNoTweets(tweetLimit) )
 						break;
 				}
 			}
@@ -72,6 +72,11 @@ public class TweetsSearchServiceImpl implements TweetsSearchService {
 		return tweetMessages;
 	}
 	
+	/**
+	 * Validates the given parameter
+	 * @param tweetLimit
+	 * @return proper integer, if input is Invalid it returns default as 10
+	 */
 	private int validateNoTweets(String tweetLimit ) {
 		try {
 			if(tweetLimit!=null && tweetLimit.length() > 0)

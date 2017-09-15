@@ -4,7 +4,14 @@ import static org.junit.Assert.assertNotNull;
 
 import org.json.JSONObject;
 import org.junit.Test;
-
+/**
+ * 
+ * As the data is in real-time and may varies time to time, So just verified and Twitter API invocation
+ * Verified the default mandatory parameters values 
+ * 
+ * @author Narasimha
+ *
+ */
 public class TweetsSearchServiceImplTest {
 
 	@Test

@@ -28,11 +28,6 @@ public class HttpsURLConnectionBuilder {
 	private static Log logger = LogFactory.getLog(HttpsURLConnectionBuilder.class);
 	static Properties configProps = PropertyServiceLocator.getInstance().getProperties();
 
-	static {
-		AppSettingUpdateUtil.applyApplicationSettings();
-	}
-	
-	
 	/**
 	 * @param APiType conveys about which API to invoke
 	 * @param gitHubProjName the key word to search Tweets using twitter API
@@ -41,6 +36,7 @@ public class HttpsURLConnectionBuilder {
 	 * 
 	 */
 	public static HttpsURLConnection buildConnection (ApiType api, String apiParameter)   {
+		AppSettingUpdateUtil.applyApplicationSettings();
 		HttpsURLConnection httpURLConnection = null;
 		switch(api) {
 		case GitHub: 
