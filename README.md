@@ -42,7 +42,7 @@ The given consumerKey and consumerSecret are just show the sample datay, may not
 	# will be stored at User Home directory
 	json.fileName=Result.json
 
-Save the configuration file as a classpath resource. Ex: /src/main/resources 
+Save the configuration file at a base directory. 
 
 HOW To Run:
 	
@@ -57,6 +57,4 @@ HOW To Run:
 
 	You can also run the following way to set up the application mandatory configuration properties
 		mvn exec:exec -DsettingsFile="my-app-settings.properties"
-	
-	Note: You should keep the my-app-settings.properties under the packaged .jar as a classpath resource.
 	
