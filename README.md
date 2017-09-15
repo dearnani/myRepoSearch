@@ -42,7 +42,7 @@ The given consumerKey and consumerSecret are just show the sample datay, may not
 	# will be stored at User Home directory
 	json.fileName=Result.json
 
-Save the configuration file at a base directory. 
+Save the configuration file at a base directory. All the Sample-*.json , *.properties files are given.
 
 HOW To Run:
 	
