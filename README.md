@@ -1,19 +1,17 @@
 # myRepoSearch
 
-
-
 Application Summary:
 
 The application 
 	
-	Consumes the GitHub API public repository without the credentials.
-		GitHubRepoSearchService retrieves the repositoryNames by keyword, attributes like sort and order
+	Consumes the GitHub API public repository to retrieve the repositoy Names.
+	GitHubRepoSearchService retrieves the repositoryNames by keyword, attributes like sort and order
 	Access the Twitter API by with credentials. The following are the keys to access the Twitter API.
 	Bearer key will be generated using the credentials to get the access for the Tweets search by GitHub Project 
 		oauth.consumerKey
 		oauth.consumerSecret
 		
-		By creating an application at https://dev.twitter.com	we can get all the above values.
+	By creating an application at https://dev.twitter.com	we can get all the above values.
 	
 	TweetsSearchService fetches the recent tweets by repositoryName.
 	Currently to achieve the end to end connectivity the parameters are limited. 
