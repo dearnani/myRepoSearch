@@ -17,9 +17,16 @@ public class MainApp {
 //			System.err.println("No input file is given.");
 //			System.exit(-1);
 //		}
-
+		
+		;
+		
 		appSettings = System.getProperties();
-		try (InputStream settingFileStream = MainApp.class.getClassLoader().getResourceAsStream("app-settings.properties")) {
+		String fileName = System.getProperty("settingsFile"); // appSettings.getProperty("settingsFile");
+		
+		if(fileName == null)
+			fileName="app-settings.properties";
+		System.out.println(String.format("FileName:%s", fileName));
+		try (InputStream settingFileStream = MainApp.class.getClassLoader().getResourceAsStream(fileName)) {
 			
 			appSettings.load(settingFileStream);
 			PropertyServiceLocator.getInstance().setProperties(appSettings);
