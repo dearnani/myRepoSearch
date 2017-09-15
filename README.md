@@ -47,17 +47,16 @@ Save the configuration file as a classpath resource. Ex: /src/main/resources
 HOW To Run:
 	
 	To compile the program use the following maven command:
-	mvn clain install package -Pprod
+		mvn package -Pprod
 
 	The program compiles into one single jar file that contains the following runnable class:
-	com.wday.search.api.core.MainApp
+		com.wday.search.api.core.MainApp
 
 	The program can be run from the command line or with the following Maven command:
-	mvn exec:exec
+		mvn exec:exec
 
 	You can also run the following way to set up the application mandatory configuration properties
-	
-	mvn exec:exec -DsettingsFile="my-app-settings.properties"
+		mvn exec:exec -DsettingsFile="my-app-settings.properties"
 	
 	Note: You should keep the my-app-settings.properties under the packaged .jar as a classpath resource.
 	
