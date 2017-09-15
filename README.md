@@ -46,15 +46,14 @@ Save the configuration file at a base directory.
 
 HOW To Run:
 	
-	To compile the program use the following maven command:
+	The following command compiles,packages into one single jar file runnable Main class: com.wday.search.api.core.MainApp
 		mvn package -Pprod
-
-	The program compiles into one single jar file that contains the following runnable class:
-		com.wday.search.api.core.MainApp
-
-	The program can be run from the command line or with the following Maven command:
-		mvn exec:java
-
-	You can also run the following way to set up the application mandatory configuration properties
-		mvn exec:java -DsettingsFile="my-app-settings.properties"
 	
+	The program can be run from the command line or with the following Maven command.
+	Run the following way to set up the application mandatory configuration properties
+		mvn exec:java -DsettingsFile="my-app-settings.properties"
+
+	Its will picks the default values for application settings. 
+	Strongly Recommend not to use and may not run due to invalid Credentials.
+		mvn exec:java  
+		
