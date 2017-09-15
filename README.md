@@ -53,8 +53,8 @@ HOW To Run:
 		com.wday.search.api.core.MainApp
 
 	The program can be run from the command line or with the following Maven command:
-		mvn exec:exec
+		mvn exec:java
 
 	You can also run the following way to set up the application mandatory configuration properties
-		mvn exec:exec -DsettingsFile="my-app-settings.properties"
+		mvn exec:java -DsettingsFile="my-app-settings.properties"
 	
