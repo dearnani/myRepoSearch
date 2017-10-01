@@ -1,0 +1,2 @@
+git update-index --chmod=+x mvnw
+language : openjdk8
